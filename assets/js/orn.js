@@ -56,17 +56,17 @@
       }
       return h;
     },
-    petals: function (r) {
+    petals: function (r, mod, arg) {
       var h = '<span class="o-fallbox">';
-      for (var i = 0; i < 9; i++) {
+      for (var i = 0, cnt = +arg || 9; i < cnt; i++) {
         h += '<span class="o-fall" style="--x:' + Math.round(4 + r() * 86) + '%;--d:' + f(12 + r() * 10) + 's;--dl:-' + f(r() * 22) + 's"><span style="--sd:' + f(2.4 + r() * 2.2) +
           's;--sx:' + Math.round(10 + r() * 24) + 'px"><i class="' + (r() < 0.45 ? 'pt' : 'pf') + '" style="--sz:' + Math.round(12 + r() * 12) + 'px;--rd:' + f(4 + r() * 5) + 's"></i></span></span>';
       }
       return h + '</span>';
     },
-    embers: function (r) {
+    embers: function (r, mod, arg) {
       var h = '<span class="o-fallbox">';
-      for (var i = 0; i < 16; i++) {
+      for (var i = 0, cnt = +arg || 16; i < cnt; i++) {
         h += '<span class="o-rise" style="--x:' + Math.round(4 + r() * 88) + '%;--d:' + f(6 + r() * 7) + 's;--dl:-' + f(r() * 13) + 's"><span style="--sd:' + f(1.4 + r() * 1.8) +
           's;--sx:' + Math.round(6 + r() * 16) + 'px"><i style="--sz:' + f(3 + r() * 5, 1) + 'px"></i></span></span>';
       }
@@ -106,7 +106,10 @@
     var wrap = document.createElement('div');
     wrap.className = 'orn' + (dark ? ' is-dark' : '');
     wrap.setAttribute('aria-hidden', 'true');
-    wrap.innerHTML = '<div class="orn-side orn-l">' + build(L, r, 'l', n) + '</div><div class="orn-side orn-r">' + build(R, r, 'r', n + 2) + '</div>';
+    var hm = (L + ',' + R).match(/han:([^,@]+)/);
+    var mob = '<span class="om-han" style="--rot:' + (-10 + r() * 8).toFixed(1) + 'deg">' + (hm ? hm[1] : HANJA[n % HANJA.length]) + '</span>';
+    if (!reduce) mob += (dark ? B.embers : B.petals)(seeded(n + 11), '', dark ? '8' : '6');
+    wrap.innerHTML = '<div class="orn-side orn-l">' + build(L, r, 'l', n) + '</div><div class="orn-side orn-r">' + build(R, r, 'r', n + 2) + '</div><div class="orn-mob">' + mob + '</div>';
     sec.insertBefore(wrap, sec.firstChild);
     built.push(wrap);
   });

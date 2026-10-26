@@ -82,12 +82,13 @@
     var cur = 0, timer = null, INTERVAL = 6500;
     /* 배경 영상: 넓은 화면 + 데이터 절약 아님 + 모션 허용일 때만, 그리고 그 슬라이드가 보일 때 불러온다 (모바일은 사진) */
     var saveData = navigator.connection && navigator.connection.saveData;
-    var canVideo = window.matchMedia('(min-width: 720px)').matches && !saveData && !reduceMotion;
+    var isPhone = window.matchMedia('(max-width: 719px)').matches;
+    var canVideo = !saveData && !reduceMotion;
     var ensureVideo = function (slide) {
       if (!canVideo) return;
       var v = slide.querySelector('video.hero-video');
       if (!v || v.getAttribute('data-loaded')) return;
-      var mp4 = v.getAttribute('data-mp4'), webm = v.getAttribute('data-webm');
+      var mp4 = v.getAttribute(isPhone ? 'data-mp4-m' : 'data-mp4'), webm = isPhone ? null : v.getAttribute('data-webm');
       if (!mp4 && !webm) return;
       v.setAttribute('data-loaded', '1');
       if (webm) { var s1 = document.createElement('source'); s1.src = webm; s1.type = 'video/webm'; v.appendChild(s1); }
@@ -102,7 +103,7 @@
       slides[cur].classList.add('is-active'); if (dots[cur]) dots[cur].classList.add('is-active');
       ensureVideo(slides[cur]);
       var v = slides[cur].querySelector('video'); if (v) { try { v.currentTime = 0; v.play().catch(function () {}); } catch (e) {} }
-      var nx = slides[(cur + 1) % slides.length]; if (nx) ensureVideo(nx);
+      var nx = slides[(cur + 1) % slides.length]; if (nx && !isPhone) ensureVideo(nx);
     };
     var stop = function () { if (timer) clearInterval(timer); timer = null; };
     var start = function () { stop(); if (!reduceMotion && slides.length > 1) timer = setInterval(function () { go(cur + 1); }, INTERVAL); };
@@ -115,7 +116,7 @@
     document.addEventListener('visibilitychange', function () { if (document.hidden) stop(); else start(); });
     start();
     ensureVideo(slides[cur]);
-    setTimeout(function () { if (slides[(cur + 1) % slides.length]) ensureVideo(slides[(cur + 1) % slides.length]); }, 4000);
+    if (!isPhone) setTimeout(function () { if (slides[(cur + 1) % slides.length]) ensureVideo(slides[(cur + 1) % slides.length]); }, 4000);
   }
 
   /* ── 숫자 롤링(오도미터): .odo[data-value] ─────────── */
@@ -165,6 +166,25 @@
     window.addEventListener('resize', runParallax, { passive: true });
     runParallax();
   }
+
+  /* ── 가로로 넘기는 목록의 진행 막대 (.scroller-progress 바로 앞 요소) ── */
+  document.querySelectorAll('.scroller-progress').forEach(function (bar) {
+    var sc = bar.previousElementSibling;
+    while (sc && sc.scrollWidth <= sc.clientWidth + 2 && sc.previousElementSibling && !sc.matches('.menu-scroll, .strength-grid, .gallery')) sc = sc.previousElementSibling;
+    if (!sc || !sc.matches('.menu-scroll, .strength-grid, .gallery')) return;
+    var fill = bar.firstElementChild;
+    var upd = function () {
+      var max = sc.scrollWidth - sc.clientWidth;
+      if (max <= 2) { bar.style.visibility = 'hidden'; return; }
+      bar.style.visibility = '';
+      var view = sc.clientWidth / sc.scrollWidth;
+      fill.style.width = (view * 100).toFixed(1) + '%';
+      fill.style.transform = 'translateX(' + ((sc.scrollLeft / max) * (1 / view - 1) * 100).toFixed(1) + '%)';
+    };
+    sc.addEventListener('scroll', function () { requestAnimationFrame(upd); }, { passive: true });
+    window.addEventListener('resize', upd, { passive: true });
+    upd();
+  });
 
   /* ── UTM·유입경로 (첫 방문 값을 세션 동안 유지) ─── */
   var KEY = 'dj_visit';

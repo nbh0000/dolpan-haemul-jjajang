@@ -1125,3 +1125,169 @@ a.brand-card:hover .bc-go { transform: translateX(4px); background: #fff; }
 .bg-fire .sec-bg img { filter: saturate(1.15) brightness(1.08); }
 /* 배경이 따로 없는 흰 섹션도 한지 질감으로 (섹션마다 느낌 있게) */
 main .sec:not(.sec-cream):not(.sec-ivory):not(.sec-green):not(.sec-photo):not(.has-bg):not(.tex-kraft):not(.tex-hanji):not(.sec-inquiry):not(.sales):not(.cost-teaser) { background-color: #FFFFFF; background-image: url("../img/tex/hanji.webp"); background-size: 1100px auto; }
+
+/* ══ v5: 모바일 개선 ══ */
+/* 히어로 좌우 여백 복구 (padding 단축 속성이 .container 여백을 지우고 있었음) */
+.hero-in { padding-left: var(--gutter); padding-right: var(--gutter); }
+
+/* 배너 점: 보이는 막대는 그대로, 누르는 영역은 넓게 */
+.hero-dot { position: relative; width: 42px; height: 26px; background: none !important; }
+.hero-dot::before { content: ''; position: absolute; left: 4px; right: 4px; top: 11px; height: 4px; border-radius: 2px; background: rgba(255,255,255,.4); transition: background-color .3s; }
+.hero-dot.is-active { width: 60px; }
+.hero-dot.is-active::before { background: var(--gold); }
+
+/* 터치 영역 · 글자 크기 */
+.link-more { min-height: 40px; }
+.agree input { width: 22px; height: 22px; margin-top: 0; }
+.footer-family a { min-height: 44px; display: inline-flex; align-items: center; gap: 4px; }
+.footer-bottom nav a { display: inline-block; padding: 10px 0; }
+.scroller-progress { display: none; }
+
+@media (max-width: 719px) {
+  .logo-sub { font-size: 11.5px; }
+  .tag { font-size: 12px; }
+  .sauce figcaption .tag { font-size: 11px; }
+  .bc-badge { font-size: 12px; }
+  .footer-family a small { font-size: 12px; }
+  mark.todo { font-size: 12px; }
+
+  /* 히어로 */
+  .hero-in { padding-top: calc(var(--header-h) + 26px); padding-bottom: 70px; gap: 0; }
+  .hero-lockup { width: 116px; margin-bottom: 12px; }
+  .hero-kw { font-size: 12.5px; margin-bottom: 12px; letter-spacing: .02em; }
+  .hero-kw::before { width: 18px; }
+  .hero-title { font-size: clamp(31px, 9vw, 40px); }
+  .hero-lead { font-size: 15px; margin-top: 14px; line-height: 1.7; }
+  .hero-actions { margin-top: 22px; gap: 10px; flex-wrap: nowrap; }
+  .hero-actions .btn { flex: 1 1 0; min-width: 0; padding: 0 12px; min-height: 54px; font-size: 16px; }
+  .hero-facts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 18px; }
+  .hero-facts li { flex-direction: column; justify-content: center; gap: 2px; padding: 10px 4px; border-radius: 12px; font-size: 11.5px; line-height: 1.3; text-align: center; }
+  .hero-facts b { font-size: 18px; }
+  .hero-ctrl { bottom: 26px; }
+  .hero-slide .hero-bg video, .hero-slide .hero-bg img { object-position: 50% 50%; }
+
+  /* 매출 숫자판: 라벨은 위, 숫자와 '원'은 한 줄 */
+  .odo-line { gap: 10px 6px; }
+  .odo-label { flex-basis: 100%; text-align: center; }
+  .odo-label br { display: none; }
+  .odo { --odo-w: min(28px, calc((100vw - 2 * var(--gutter) - 64px) / 9)); --odo-h: 48px; gap: 3px; }
+  .odo-sep { margin: 0 -1px; }
+  .odo-unit { padding-bottom: 4px; }
+
+  /* 창업비용 사진: 4:3 으로, 말풍선 안 겹치게 */
+  .teaser-visual img { aspect-ratio: 4 / 3; object-position: 22% center; }
+  .teaser-visual .bubble { font-size: 12.5px; padding: 8px 12px; }
+  .teaser-visual .bubble:nth-child(2) { left: 3%; top: 7%; }
+  .teaser-visual .bubble:nth-child(3) { right: 3%; left: auto; top: 38%; }
+  .teaser-visual .bubble:nth-child(4) { bottom: 8%; }
+  .zero-chips { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .zero-chips li { justify-content: center; padding: 12px 10px; }
+
+  /* 가로로 넘기는 목록 아래 진행 막대 */
+  .scroller-progress { display: block; height: 3px; margin: 2px 0 0; border-radius: 2px; background: rgba(0,58,30,.12); overflow: hidden; }
+  .scroller-progress i { display: block; height: 100%; width: 30%; border-radius: 2px; background: var(--green-900); transform-origin: left; transition: width .15s linear; }
+  .on-dark .scroller-progress { background: rgba(255,255,255,.16); }
+  .on-dark .scroller-progress i { background: var(--gold); }
+
+  /* 매장 컨셉 갤러리 */
+  .gallery figure { flex-basis: 78vw; }
+
+  /* 패밀리 브랜드 카드 낮게 */
+  .brand-card { aspect-ratio: 16 / 8; }
+
+  /* 하단 고정 바: 가맹문의 빛 효과 */
+  .qb-mobile .mb-inquiry { position: relative; overflow: hidden; background: linear-gradient(180deg, #EC2A22, #C70D12); gap: 6px; }
+  .qb-mobile .mb-inquiry::after { content: ''; position: absolute; top: -60%; left: -80%; width: 45%; height: 220%; background: linear-gradient(100deg, transparent 20%, rgba(255,255,255,.45) 50%, transparent 80%); transform: skewX(-20deg); animation: shine 3.6s ease-in-out infinite; }
+  .qb-mobile .mb-inquiry .ico-arrow { width: 22px; height: 22px; padding: 5px; border-radius: 50%; background: rgba(255,255,255,.22); }
+}
+
+/* 강점 카드: 휴대폰에서는 옆으로 넘기기 */
+.strength-hint { display: none; }
+@media (max-width: 639px) {
+  .strength-grid { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 12px; padding: 4px var(--gutter) 14px; margin: 0 calc(-1 * var(--gutter)); scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+  .strength-grid::-webkit-scrollbar { display: none; }
+  .strength { flex: 0 0 82%; scroll-snap-align: center; }
+  .strength-hint { display: flex; color: rgba(255,255,255,.7); }
+  .strength-hint::before { background: rgba(255,255,255,.7); }
+}
+
+/* 수익률: 휴대폰에서는 한 표로 비교 */
+.profit-m { display: none; }
+@media (max-width: 719px) {
+  .profit-wrap { display: none; }
+  .profit-m { display: block; }
+}
+.pm-heads { display: grid; grid-template-columns: 1fr auto 1fr; align-items: stretch; gap: 8px; }
+.pm-head { border-radius: 90px 90px 14px 14px; padding: 22px 8px 14px; text-align: center; color: #fff; display: flex; flex-direction: column; align-items: center; gap: 6px; box-shadow: var(--shadow-sm); }
+.pm-head.them { background: linear-gradient(180deg, #ABABAB, #8E8E8E); }
+.pm-head.us { background: linear-gradient(180deg, var(--green-700), var(--green-900)); box-shadow: var(--shadow-md); }
+.pm-head img { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; border: 3px solid #fff; }
+.pm-head.them img { filter: grayscale(1); }
+.pm-label { font-family: var(--font-num); font-weight: 700; font-size: 14px; line-height: 1.25; }
+.pm-margin { display: flex; flex-direction: column; align-items: center; line-height: 1; }
+.pm-margin small { font-size: 11.5px; opacity: .9; margin-bottom: 4px; }
+.pm-margin b { font-family: var(--font-num); font-size: 30px; }
+.pm-head.us .pm-margin b { color: var(--gold); }
+.pm-vs { align-self: center; width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; background: var(--gold); color: var(--red); font-family: var(--font-num); font-weight: 700; font-size: 15px; border: 2px solid #fff; box-shadow: 0 6px 14px rgba(0,0,0,.2); }
+.pm-table { width: 100%; margin-top: 12px; border-collapse: separate; border-spacing: 0; background: #fff; border-radius: 16px; overflow: hidden; box-shadow: var(--shadow-sm); font-size: 13px; }
+.pm-table th, .pm-table td { padding: 11px 8px; border-bottom: 1px dashed var(--line); vertical-align: middle; }
+.pm-table tbody th { text-align: left; font-weight: 600; color: var(--ink-2); width: 32%; padding-left: 14px; }
+.pm-table td { text-align: right; font-family: var(--font-num); font-weight: 700; white-space: nowrap; }
+.pm-table td small { display: block; font-family: var(--font-body); font-weight: 500; font-size: 11.5px; color: var(--muted); margin-top: 2px; }
+.pm-table td.them { color: #777; }
+.pm-table td.us { color: var(--green-900); background: var(--green-050); padding-right: 14px; }
+.pm-table tbody tr:last-child th, .pm-table tbody tr:last-child td { border-bottom: 0; }
+.pm-table tfoot th, .pm-table tfoot td { border-bottom: 0; padding-top: 14px; padding-bottom: 14px; }
+.pm-table tfoot th { background: #8E8E8E; color: #fff; text-align: left; padding-left: 14px; font-family: var(--font-num); font-size: 13px; }
+.pm-table tfoot td.them { background: #8E8E8E; color: #fff; font-size: 14px; }
+.pm-table tfoot td.us { background: var(--red); color: #fff; font-size: 16px; }
+
+/* 타사 비교: 휴대폰에서는 한 표로 */
+.vs-m { display: none; }
+@media (max-width: 719px) {
+  .vs-wrap { display: none; }
+  .vs-m { display: block; }
+}
+.vm-table { width: 100%; border-collapse: separate; border-spacing: 0; border-radius: 16px; overflow: hidden; background: rgba(0,0,0,.42); border: 1px solid rgba(243,207,106,.35); backdrop-filter: blur(6px); font-size: 13.5px; }
+.vm-table th, .vm-table td { padding: 12px 8px; border-bottom: 1px dashed rgba(255,255,255,.18); vertical-align: middle; }
+.vm-table thead th { font-family: var(--font-num); font-weight: 700; font-size: 13px; line-height: 1.3; padding-top: 14px; padding-bottom: 14px; border-bottom: 1px solid rgba(243,207,106,.45); }
+.vm-table thead th.them { color: rgba(255,255,255,.8); text-align: center; }
+.vm-table thead th.us { background: var(--red); color: var(--gold); text-align: center; font-size: 14px; }
+.vm-table thead th.vs { width: 28%; }
+.vm-table thead th.vs span { display: inline-grid; place-items: center; width: 36px; height: 36px; border-radius: 50%; background: var(--gold); color: var(--red); font-size: 14px; border: 2px solid #fff; }
+.vm-table tbody th { text-align: left; color: rgba(255,255,255,.75); font-weight: 600; font-size: 13px; padding-left: 14px; }
+.vm-table td { text-align: center; }
+.vm-table td.them { color: rgba(255,255,255,.7); font-size: 12.5px; }
+.vm-table td.us { background: rgba(216,12,18,.82); color: #fff; font-family: var(--font-num); font-weight: 700; }
+.vm-table tbody tr:last-child th, .vm-table tbody tr:last-child td { border-bottom: 0; }
+
+/* 휴대폰·태블릿용 장식 (orn.js .orn-mob): 큰 흐린 한자 + 꽃잎/불티 몇 개 */
+.orn-mob { display: none; }
+@media (max-width: 1399px) {
+  .orn { display: block; position: absolute; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+  .orn-side { display: none; }
+  .orn-mob { display: block; position: absolute; inset: 0; }
+}
+.om-han { position: absolute; top: 14px; right: -5vw; font-family: 'Ma Shan Zheng', var(--font-brush); font-size: min(46vw, 240px); line-height: 1; color: rgba(45,32,18,.06); rotate: var(--rot, -6deg); opacity: 0; transition: opacity 1.4s var(--ease-out); }
+.orn.is-dark .om-han { color: rgba(255,226,170,.07); }
+.tex-kraft .om-han { color: rgba(80,45,10,.1); }
+.orn.orn-seen .om-han { opacity: 1; }
+@media (prefers-reduced-motion: reduce) { .om-han { opacity: 1; } }
+
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+
+/* v5.1 모바일 보정 */
+@media (max-width: 719px) {
+  /* 배너 점이 숫자 카드에 가리지 않게 */
+  .hero-in { padding-bottom: 96px; }
+  .hero-ctrl { bottom: 52px; }
+  /* 메뉴가 홀수 개면 마지막 칸은 가로로 길게 */
+  .menu-grid > .menu-item:last-child:nth-child(odd) { grid-column: 1 / -1; display: grid; grid-template-columns: 44% 1fr; align-items: center; }
+  .menu-grid > .menu-item:last-child:nth-child(odd) .ph { aspect-ratio: 4 / 3; height: 100%; }
+  .menu-grid > .menu-item:last-child:nth-child(odd) .body { padding: 14px 16px; }
+}
+/* 휴대폰 꽃잎·불티는 양쪽 가장자리로만, 글자 위로 지나가지 않게 */
+.orn-mob .o-fall, .orn-mob .o-rise { opacity: .7; }
+.orn-mob .o-fall:nth-child(odd), .orn-mob .o-rise:nth-child(odd) { left: calc(var(--x) * .1); }
+.orn-mob .o-fall:nth-child(even), .orn-mob .o-rise:nth-child(even) { left: calc(90% + var(--x) * .08); }
+.orn-mob .o-fall i { width: calc(var(--sz, 16px) * .8); }
