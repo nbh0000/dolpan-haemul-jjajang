@@ -115,7 +115,7 @@
   });
   if (!built.length) return;
 
-  /* 보일 때만 움직이고, 처음 보일 때 세로 문구·낙관·회문 띠가 나타남 */
+  /* 보일 때만 움직이고, 보일 때마다 세로 문구·낙관·회문 띠가 나타남 */
   if (reduce || !('IntersectionObserver' in window)) {
     built.forEach(function (w) { w.classList.add('orn-on', 'orn-seen'); });
     return;
@@ -124,6 +124,7 @@
     es.forEach(function (e) {
       e.target.classList.toggle('orn-on', e.isIntersecting);
       if (e.isIntersecting) e.target.classList.add('orn-seen');
+      else if (e.boundingClientRect.bottom <= 0 || e.boundingClientRect.top >= window.innerHeight) e.target.classList.remove('orn-seen');
     });
   }, { rootMargin: '60px 0px', threshold: 0.02 });
   built.forEach(function (w) { io.observe(w); });
