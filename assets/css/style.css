@@ -258,7 +258,7 @@ mark.todo { background: #FFF2B3; color: #7A5A00; padding: 0 .3em; border-radius:
   .side-float a:hover { transform: translateY(-3px); box-shadow: 0 14px 30px rgba(0,0,0,.34); }
   .side-float img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
   .side-float span { position: relative; width: 100%; padding: 5px 0 6px; text-align: center; background: rgba(0,42,22,.88); }
-  .side-float .sf-call { background: var(--red); flex-direction: column; justify-content: center; gap: 6px; }
+  .side-float .sf-call { background: var(--red); flex-direction: column; align-items: center; justify-content: center; gap: 6px; }
   .side-float .sf-call .ico-phone { font-size: 30px; color: #fff; }
   .side-float .sf-call span { background: transparent; padding: 0; }
 }
@@ -1327,7 +1327,7 @@ main .sec:not(.sec-cream):not(.sec-ivory):not(.sec-green):not(.sec-photo):not(.h
 
 /* 메인 배너: 슬라이드가 바뀔 때마다 문구가 위에서부터 차례로 등장 */
 @keyframes hero-rise { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: none; } }
-@keyframes hero-mask { from { clip-path: inset(100% -4% -14% -4%); transform: translateY(.4em); } to { clip-path: inset(-14% -4% -14% -4%); transform: none; } }
+@keyframes hero-mask { from { clip-path: inset(100% -6% -14% -6%); transform: translateY(.4em); } to { clip-path: inset(-90% -6% -14% -6%); transform: none; } }
 .hero-slide.is-active .hero-lockup { animation: hero-rise .7s var(--ease-out) both; }
 .hero-slide.is-active .hero-kw { animation: hero-rise .7s var(--ease-out) .08s both; }
 .hero-slide.is-active .hero-title { animation: hero-mask .9s var(--ease-out) .14s both; }
@@ -1365,4 +1365,28 @@ main .sec:not(.sec-cream):not(.sec-ivory):not(.sec-green):not(.sec-photo):not(.h
   .hero-slide.is-active .hero-lockup, .hero-slide.is-active .hero-kw, .hero-slide.is-active .hero-title, .hero-slide.is-active .hero-lead, .hero-slide.is-active .hero-actions, .hero-slide.is-active .hero-facts { animation: none; }
   [data-scrub] img { transform: none !important; }
   .scroll-prog { display: none; }
+}
+
+/* ── 배너 강조: 작은 제목 + 0원 강조선 + 금메달 (2026-10-28) ── */
+.hero-title.is-sm { font-size: calc(var(--fs-hero) * .74); margin-top: 1.25em; }
+.em-mark { position: relative; display: inline-block; margin-left: .12em; color: var(--gold); font-size: 1.5em; line-height: 1; }
+.em-burst { position: absolute; left: 50%; bottom: 84%; width: 1.3em; max-width: none; height: auto; transform: translateX(-50%); filter: drop-shadow(0 6px 14px rgba(0,0,0,.45)); pointer-events: none; }
+.hero-badge { position: relative; margin: 0; justify-self: center; align-self: center; width: clamp(220px, 28vw, 420px); aspect-ratio: 1; }
+.hero-badge img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
+.hb-sparks { transform: scale(1.25); opacity: .9; }
+.hb-medal { filter: drop-shadow(0 24px 40px rgba(0,0,0,.55)); }
+@keyframes em-pop { 0% { opacity: 0; transform: translateX(-50%) translateY(14px) scale(.6); } 60% { opacity: 1; transform: translateX(-50%) translateY(-3px) scale(1.08); } 100% { opacity: 1; transform: translateX(-50%) scale(1); } }
+@keyframes em-beat { 0%, 100% { transform: translateX(-50%) scale(1); } 50% { transform: translateX(-50%) scale(1.08); } }
+@keyframes hb-in { from { opacity: 0; transform: translateY(30px) rotate(-8deg) scale(.9); } to { opacity: 1; transform: none; } }
+@keyframes hb-float { 0%, 100% { translate: 0 0; } 50% { translate: 0 -12px; } }
+@keyframes hb-spin { to { transform: scale(1.25) rotate(360deg); } }
+.hero-slide.is-active .em-burst { animation: em-pop .6s var(--ease-out) .75s both, em-beat 1.6s ease-in-out 1.6s infinite; }
+.hero-slide.is-active .hb-medal { animation: hb-in .9s var(--ease-out) .3s both, hb-float 4s ease-in-out 1.2s infinite; }
+.hero-slide.is-active .hb-sparks { animation: hb-spin 40s linear infinite; }
+@media (max-width: 719px) {
+  .hero-badge { position: absolute; right: var(--gutter); top: 78px; width: 108px; }
+  .em-mark { font-size: 1.4em; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-slide.is-active .em-burst, .hero-slide.is-active .hb-medal, .hero-slide.is-active .hb-sparks { animation: none; }
 }
