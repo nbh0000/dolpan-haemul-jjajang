@@ -1291,3 +1291,26 @@ main .sec:not(.sec-cream):not(.sec-ivory):not(.sec-green):not(.sec-photo):not(.h
 .orn-mob .o-fall:nth-child(odd), .orn-mob .o-rise:nth-child(odd) { left: calc(var(--x) * .1); }
 .orn-mob .o-fall:nth-child(even), .orn-mob .o-rise:nth-child(even) { left: calc(90% + var(--x) * .08); }
 .orn-mob .o-fall i { width: calc(var(--sz, 16px) * .8); }
+
+/* ── 상생 약속 (매출 성과 자리, 2026-10-28) ── */
+.together .sec-bg img { object-position: 70% 50%; }
+.together-grid { display: grid; gap: clamp(28px, 4vw, 56px); align-items: center; }
+.together .sec-lead { color: rgba(255,255,255,.82); }
+.together-list { list-style: none; margin: clamp(22px, 3vw, 34px) 0 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.together-list li { padding: clamp(14px, 1.6vw, 20px); border: 1px solid var(--gold-line); border-radius: var(--radius); background: rgba(12,6,2,.55); backdrop-filter: blur(3px); }
+.together-list .v { display: block; font-family: var(--font-num); font-weight: 700; color: var(--gold); font-size: clamp(30px, 1.4rem + 2vw, 46px); line-height: 1.05; }
+.together-list b { display: block; margin-top: 6px; font-size: clamp(15px, .85rem + .3vw, 18px); color: #fff; }
+.together-list p { margin: 4px 0 0; font-size: 14px; line-height: 1.55; color: rgba(255,255,255,.72); }
+.together-photo { margin: 0; justify-self: center; width: min(100%, 420px); border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--gold-line); box-shadow: 0 24px 60px rgba(0,0,0,.5); }
+.together-photo img { display: block; width: 100%; aspect-ratio: 3 / 4; object-fit: cover; object-position: 50% 20%; }
+@media (min-width: 960px) { .together-grid { grid-template-columns: minmax(0, 1.35fr) minmax(0, .8fr); } }
+@media (max-width: 719px) {
+  .together-list p { font-size: 13px; }
+  .together-photo { width: min(100%, 300px); order: -1; }
+  .together-photo img { aspect-ratio: 4 / 5; }
+}
+.sig .serve { margin: 6px 0 0; font-weight: 700; color: var(--ink-2); }
+.region-example { margin: 0 0 18px; max-width: 760px; padding: 16px 20px; border-left: 3px solid var(--gold); background: rgba(0,0,0,.18); color: rgba(255,255,255,.88); line-height: 1.7; }
+.region-note { margin: 10px 0 0; font-size: 14px; color: rgba(255,255,255,.7); }
+.hq-chef { margin: 0 0 22px; max-width: 320px; border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--gold-line); }
+.hq-chef img { display: block; width: 100%; aspect-ratio: 4 / 5; object-fit: cover; object-position: 50% 15%; }
