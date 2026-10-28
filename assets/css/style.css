@@ -1306,7 +1306,7 @@ main .sec:not(.sec-cream):not(.sec-ivory):not(.sec-green):not(.sec-photo):not(.h
 @media (min-width: 960px) { .together-grid { grid-template-columns: minmax(0, 1.35fr) minmax(0, .8fr); } }
 @media (max-width: 719px) {
   .together-list p { font-size: 13px; }
-  .together-photo { width: min(100%, 300px); order: -1; }
+  .together-photo { width: min(78%, 280px); }
   .together-photo img { aspect-ratio: 4 / 5; }
 }
 .sig .serve { margin: 6px 0 0; font-weight: 700; color: var(--ink-2); }
@@ -1314,3 +1314,55 @@ main .sec:not(.sec-cream):not(.sec-ivory):not(.sec-green):not(.sec-photo):not(.h
 .region-note { margin: 10px 0 0; font-size: 14px; color: rgba(255,255,255,.7); }
 .hq-chef { margin: 0 0 22px; max-width: 320px; border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--gold-line); }
 .hq-chef img { display: block; width: 100%; aspect-ratio: 4 / 5; object-fit: cover; object-position: 50% 15%; }
+
+/* ══ 임팩트 모션 (2026-10-28) ═══════════════════════════════
+   제목 마스크 등장 · 배너 문구 순차 등장 · 키워드 띠 · 스크롤 확대 · 카드 조명 · 스크롤 진행 막대 */
+
+/* 제목: 아래 마스크 안에서 밀려 올라오며 드러남 */
+.reveal .sec-title, .reveal .big-line, .reveal .page-title {
+  clip-path: inset(100% -4% -12% -4%); transform: translateY(.45em);
+  transition: clip-path .9s var(--ease-out) .1s, transform .9s var(--ease-out) .1s;
+}
+.reveal.is-in .sec-title, .reveal.is-in .big-line, .reveal.is-in .page-title { clip-path: inset(-12% -4% -12% -4%); transform: none; }
+
+/* 메인 배너: 슬라이드가 바뀔 때마다 문구가 위에서부터 차례로 등장 */
+@keyframes hero-rise { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: none; } }
+@keyframes hero-mask { from { clip-path: inset(100% -4% -14% -4%); transform: translateY(.4em); } to { clip-path: inset(-14% -4% -14% -4%); transform: none; } }
+.hero-slide.is-active .hero-lockup { animation: hero-rise .7s var(--ease-out) both; }
+.hero-slide.is-active .hero-kw { animation: hero-rise .7s var(--ease-out) .08s both; }
+.hero-slide.is-active .hero-title { animation: hero-mask .9s var(--ease-out) .14s both; }
+.hero-slide.is-active .hero-lead { animation: hero-rise .7s var(--ease-out) .32s both; }
+.hero-slide.is-active .hero-actions { animation: hero-rise .7s var(--ease-out) .42s both; }
+.hero-slide.is-active .hero-facts { animation: hero-rise .7s var(--ease-out) .52s both; }
+
+/* 키워드 띠: 빨간 띠와 초록 띠가 엇갈려 기울어진 채 흐름 */
+.mq { position: relative; overflow: hidden; padding: clamp(26px, 3vw, 40px) 0; background: var(--green-900); isolation: isolate; display: grid; }
+.mq-row { position: relative; width: 108%; margin-left: -4%; overflow: hidden; padding: clamp(10px, 1.1vw, 16px) 0; box-shadow: 0 10px 30px rgba(0,0,0,.35); }
+.mq-a { background: var(--red); color: #fff; transform: rotate(-2.2deg); z-index: 2; border-top: 2px solid var(--gold); border-bottom: 2px solid var(--gold); }
+.mq-b { background: var(--gold); color: var(--green-900); transform: rotate(1.6deg); z-index: 1; margin-bottom: clamp(-18px, -1.2vw, -8px); }
+.mq-track { display: flex; width: max-content; align-items: center; will-change: transform; }
+.mq-dup { display: contents; }
+.mq-track span, .mq-track i { flex: none; }
+.mq-track span { font-family: var(--font-brush); font-weight: 900; font-size: clamp(20px, 1rem + 1.6vw, 38px); line-height: 1.2; white-space: nowrap; padding: 0 clamp(14px, 1.6vw, 26px); }
+.mq-track i { font-style: normal; color: var(--gold); font-size: clamp(14px, .7rem + .6vw, 22px); }
+.mq-b .mq-track i { color: var(--red); }
+.mq-a .mq-track i { color: var(--gold); }
+.mq-b .mq-track span { font-size: clamp(16px, .85rem + 1.1vw, 28px); }
+
+/* 스크롤 확대: 화면 가운데로 올수록 사진이 커짐 (main.js 가 transform 지정) */
+[data-scrub] img { transform-origin: 50% 60%; will-change: transform; }
+
+/* 카드 조명: 마우스를 따라 금빛이 비침 (마우스 환경만) */
+.spot { position: relative; isolation: isolate; overflow: hidden; }
+.spot-glow { position: absolute; left: 0; top: 0; width: 320px; height: 320px; margin: -160px 0 0 -160px; border-radius: 50%; background: radial-gradient(closest-side, rgba(243,207,106,.26), rgba(243,207,106,.08) 55%, transparent); pointer-events: none; opacity: 0; z-index: -1; transition: opacity .3s ease; }
+@media (hover: hover) and (pointer: fine) { .spot:hover > .spot-glow { opacity: 1; } }
+
+/* 스크롤 진행 막대 */
+.scroll-prog { position: fixed; left: 0; top: 0; z-index: 200; width: 100%; height: 3px; background: linear-gradient(90deg, var(--gold-2), var(--gold)); transform: scaleX(0); transform-origin: 0 50%; pointer-events: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal .sec-title, .reveal .big-line, .reveal .page-title { clip-path: none; transform: none; transition: none; }
+  .hero-slide.is-active .hero-lockup, .hero-slide.is-active .hero-kw, .hero-slide.is-active .hero-title, .hero-slide.is-active .hero-lead, .hero-slide.is-active .hero-actions, .hero-slide.is-active .hero-facts { animation: none; }
+  [data-scrub] img { transform: none !important; }
+  .scroll-prog { display: none; }
+}

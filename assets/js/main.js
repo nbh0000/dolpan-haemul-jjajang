@@ -38,6 +38,58 @@
     window.addEventListener('resize', function () { if (window.innerWidth >= 880 && !drawer.hidden) setDrawer(false); }, { passive: true });
   }
 
+  /* ── 스크롤 진행 막대 · 스크롤 확대 · 키워드 띠 (rAF 루프 하나) ── */
+  var prog = null;
+  if (!reduceMotion) { prog = document.createElement('div'); prog.className = 'scroll-prog'; prog.setAttribute('aria-hidden', 'true'); document.body.appendChild(prog); }
+  var scrubImgs = reduceMotion ? [] : Array.prototype.slice.call(document.querySelectorAll('[data-scrub] img'));
+  var mqRows = [];
+  if (!reduceMotion && 'animate' in document.documentElement) {
+    document.querySelectorAll('.mq-row').forEach(function (row) {
+      var track = row.querySelector('.mq-track'); if (!track) return;
+      var dir = parseFloat(row.getAttribute('data-mq')) || 1;
+      var frames = dir > 0 ? [{ transform: 'translateX(0)' }, { transform: 'translateX(-50%)' }] : [{ transform: 'translateX(-50%)' }, { transform: 'translateX(0)' }];
+      var anim = track.animate(frames, { duration: Math.max(18000, track.scrollWidth / 2 / 70 * 1000), iterations: Infinity, easing: 'linear' });
+      mqRows.push({ row: row, anim: anim, rate: 1, visible: true });
+    });
+    if ('IntersectionObserver' in window && mqRows.length) {
+      var mio = new IntersectionObserver(function (en) {
+        en.forEach(function (e) { mqRows.forEach(function (m) { if (m.row !== e.target) return; m.visible = e.isIntersecting; if (m.visible) m.anim.play(); else m.anim.pause(); }); });
+      });
+      mqRows.forEach(function (m) { mio.observe(m.row); });
+    }
+  }
+  if (prog || scrubImgs.length || mqRows.length) {
+    var lastSY = window.scrollY, vel = 0, sDir = 1;
+    var frame = function () {
+      var y = window.scrollY, vh = window.innerHeight, dy = y - lastSY; lastSY = y;
+      if (prog) { var max = document.documentElement.scrollHeight - vh; prog.style.transform = 'scaleX(' + (max > 0 ? Math.min(1, y / max) : 0).toFixed(4) + ')'; }
+      scrubImgs.forEach(function (im) {
+        var r = im.getBoundingClientRect(); if (r.bottom < 0 || r.top > vh) return;
+        /* 사진 윗변이 화면 아래 끝 → 0, 사진 가운데가 화면 가운데 → 1 */
+        var p = Math.max(0, Math.min(1, (vh - r.top) / (vh / 2 + r.height / 2)));
+        im.style.transform = 'scale(' + (0.86 + 0.14 * (1 - Math.pow(1 - p, 2))).toFixed(4) + ')';
+      });
+      if (mqRows.length) {
+        /* 스크롤 방향으로 흐르고, 빠르게 스크롤할수록 빨라졌다가 천천히 원래 속도로 */
+        if (Math.abs(dy) > 0.5) sDir = dy > 0 ? 1 : -1;
+        vel += (Math.min(Math.abs(dy), 80) - vel) * 0.12;
+        var target = sDir * (1 + vel / 6);
+        mqRows.forEach(function (m) { if (!m.visible) return; m.rate += (target - m.rate) * 0.1; m.anim.playbackRate = m.rate; });
+      }
+      requestAnimationFrame(frame);
+    };
+    requestAnimationFrame(frame);
+  }
+
+  /* ── 카드 조명: 마우스 위치를 따라 금빛 (마우스 환경만) ── */
+  if (!reduceMotion && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+    document.querySelectorAll('.strength, .together-list li, .vs-panel, .benefit-zero li, .cond, .region-support li').forEach(function (card) {
+      card.classList.add('spot');
+      var g = document.createElement('span'); g.className = 'spot-glow'; g.setAttribute('aria-hidden', 'true'); card.appendChild(g);
+      card.addEventListener('pointermove', function (e) { var r = card.getBoundingClientRect(); g.style.transform = 'translate(' + Math.round(e.clientX - r.left) + 'px,' + Math.round(e.clientY - r.top) + 'px)'; });
+    });
+  }
+
   /* ── 스크롤 등장 ─────────────────────────────────── */
   var revealEls = document.querySelectorAll('.reveal, .reveal-stagger');
   var offScreen = function (r) { return r.bottom <= 0 || r.top >= window.innerHeight; };
