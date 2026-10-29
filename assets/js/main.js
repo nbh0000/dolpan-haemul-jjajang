@@ -352,3 +352,35 @@
   if (mainForm) setupForm(mainForm);
   document.querySelectorAll('form.qb-form').forEach(setupForm);
 })();
+
+/* 메인 진입 팝업(여러 장): 카드마다 닫기·오늘 하루 안 보기, 다 닫히면 배경도 닫힘 */
+(function () {
+  var pop = document.querySelector('.notice-pop');
+  if (!pop) return;
+  var today = new Date().toISOString().slice(0, 10);
+  function hiddenToday(k) { try { return localStorage.getItem('dj-pop-' + k) === today || sessionStorage.getItem('dj-pop-' + k) === '1'; } catch (e) { return false; } }
+  var cards = [].slice.call(pop.querySelectorAll('.np-card'));
+  cards.forEach(function (c) { if (hiddenToday(c.dataset.key)) c.remove(); });
+  cards = [].slice.call(pop.querySelectorAll('.np-card'));
+  if (!cards.length) return;
+  function shut() { pop.classList.remove('is-on'); setTimeout(function () { pop.hidden = true; }, 300); }
+  function closeCard(c) {
+    try {
+      if (c.querySelector('.np-today').checked) localStorage.setItem('dj-pop-' + c.dataset.key, today);
+      sessionStorage.setItem('dj-pop-' + c.dataset.key, '1');
+    } catch (e) {}
+    c.remove();
+    if (!pop.querySelector('.np-card')) shut();
+  }
+  cards.forEach(function (c) {
+    c.querySelector('.np-x').addEventListener('click', function () { closeCard(c); });
+    c.querySelector('.np-close').addEventListener('click', function () { closeCard(c); });
+  });
+  pop.addEventListener('click', function (e) { if (e.target === pop) shut(); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !pop.hidden) shut(); });
+  var wait = document.documentElement.classList.contains('intro-on') ? 2600 : 900;
+  setTimeout(function () {
+    pop.hidden = false;
+    requestAnimationFrame(function () { requestAnimationFrame(function () { pop.classList.add('is-on'); }); });
+  }, wait);
+})();
