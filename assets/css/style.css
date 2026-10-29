@@ -407,6 +407,9 @@ a.family-brand:hover { border-color: var(--gold); background: rgba(243,207,106,.
 .inquiry-phone-label .ico-phone { color: var(--gold); }
 .inquiry-phone strong { font-family: var(--font-num); font-size: clamp(28px, 2vw + 16px, 38px); color: var(--gold); line-height: 1.1; }
 .inquiry-hours { margin-top: 10px; font-size: 14px; color: var(--muted); }
+.inquiry-sms { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin-top: 10px; padding: 14px 20px; border: 1.5px solid var(--green-900, #0b3d22); border-radius: 14px; color: var(--green-900, #0b3d22); font-weight: 700; }
+.inquiry-sms span { font-size: 14px; }
+.inquiry-sms b { font-family: var(--font-num); font-size: 22px; }
 .inquiry-form { background: #fff; border: 1px solid var(--line); border-radius: var(--radius-lg); padding: 24px 20px 22px; display: grid; gap: 16px; box-shadow: var(--shadow-sm); }
 .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
 .field-row { display: grid; gap: 16px; }
@@ -1504,7 +1507,9 @@ main .sec.live-sec, .sec.live-sec { position: relative; overflow: hidden; color:
 .lp-grid { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 12px 10px; }
 .lp-grid li { flex: 0 0 calc((100% - 10px) / 2); display: flex; flex-direction: column; border-radius: 12px; padding: 2px; background: linear-gradient(180deg, #fff1b8, #d9a441 45%, #a8741f); box-shadow: 0 8px 18px rgba(0,0,0,.4); }
 .lp-badge { display: flex; align-items: center; justify-content: center; gap: 6px; padding: 5px 0 4px; font-size: 14px; font-weight: 800; color: #8a1010; background: linear-gradient(180deg, #ffeeb0, #f0c75e); border-radius: 10px 10px 0 0; }
-.lp-grid li > span { padding: 12px 4px 13px; font-size: 17px; font-weight: 700; line-height: 1.2; background: #2a1a10; border-radius: 0 0 10px 10px; white-space: nowrap; animation: lp-glow 3.2s ease-in-out infinite; animation-delay: var(--d); }
+.lp-grid li > span { padding: 12px 4px 13px; font-size: 17px; font-weight: 700; line-height: 1.2; background: #2a1a10; border-radius: 0 0 10px 10px; flex: 1; display: flex; align-items: center; justify-content: center; word-break: keep-all; animation: lp-glow 3.2s ease-in-out infinite; animation-delay: var(--d); }
+.lp-grid li.is-alt .lp-badge { color: #fff; background: linear-gradient(180deg, #e8352b, #b3140e); }
+.lp-grid li.is-alt .lp-badge i { background: #ffe27a; box-shadow: 0 0 8px #ffd23f; }
 .live-cta { margin-top: 32px; }
 @keyframes lt-blink { 50% { opacity: .2; } }
 @keyframes lp-glow { 0%, 70%, 100% { background: #2a1a10; color: #fff; } 80% { background: #5a3412; color: #ffe7a3; } }
