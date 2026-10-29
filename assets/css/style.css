@@ -1549,10 +1549,10 @@ main .sec.live-sec, .sec.live-sec { position: relative; overflow: hidden; color:
 @media (max-width: 819px) { .notice-pop { align-content: flex-start; } }
 /* 공사중 매장 팝업: 사진 + 공사 테이프 + 진행 띠 + 요점 */
 .np-store-card .np-body { padding: 20px 22px 22px; }
-.np-photo { position: relative; aspect-ratio: 16 / 9; overflow: hidden; border-bottom: 2px solid #e9bf62; }
-.np-photo img { width: 100%; height: 100%; object-fit: cover; filter: saturate(.9) brightness(.85); }
-.np-photo::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 45%, rgba(20,12,7,.75)); }
-.np-tape { position: absolute; left: -10%; right: -10%; bottom: 18%; z-index: 1; display: flex; justify-content: center; gap: 28px; padding: 6px 0; rotate: -6deg; font: 800 13px/1 var(--font-num); letter-spacing: .12em; color: #111; white-space: nowrap; overflow: hidden;
+.np-photo { position: relative; overflow: hidden; aspect-ratio: 16 / 9; display: grid; place-items: center; background: #120a06; }
+.np-photo::before { content: ""; position: absolute; inset: -20px; background: var(--img) center / cover no-repeat; filter: blur(14px) brightness(.55); }
+.np-photo img { position: relative; display: block; width: 100%; height: 100%; object-fit: contain; }
+.np-tape { position: relative; display: flex; justify-content: center; gap: 28px; padding: 6px 0; font: 800 13px/1 var(--font-num); letter-spacing: .12em; color: #111; white-space: nowrap; overflow: hidden;
   background: repeating-linear-gradient(-45deg, #ffd23f 0 18px, #ffd23f 18px 18px, #111 18px 30px, #ffd23f 30px 48px); box-shadow: 0 4px 12px rgba(0,0,0,.45); }
 .np-tape b { padding: 3px 10px; background: #ffd23f; }
 .np-store-card .np-kicker { margin-bottom: 10px; }
