@@ -1429,3 +1429,55 @@ main .sec.awards { background: radial-gradient(ellipse 60% 70% at 72% 50%, rgba(
 .awards-row img { display: block; width: 100%; height: auto; filter: drop-shadow(0 18px 30px rgba(0,0,0,.55)); }
 .awards-row li:nth-child(2) { margin-bottom: 12%; }
 @media (min-width: 960px) { .awards-grid { grid-template-columns: minmax(0, .9fr) minmax(0, 1.2fr); } }
+
+/* ══ 첫 화면 임팩트 (2026-10-29) ══════════════════════════ */
+/* 인트로: 로고 + 금색 선 → 위로 걷힘 (방문당 한 번, sessionStorage) */
+.intro { position: fixed; inset: 0; z-index: 9999; display: grid; place-items: center; background: radial-gradient(ellipse at 50% 45%, #0e3a24 0%, #04140b 60%, #020805 100%); pointer-events: none; animation: intro-out .8s cubic-bezier(.7,0,.2,1) 1.45s both; }
+.no-intro .intro { display: none; }
+.intro-in { display: grid; justify-items: center; gap: 14px; }
+.intro img { width: clamp(120px, 14vw, 180px); height: auto; animation: intro-logo .9s cubic-bezier(.2,.9,.25,1.15) .1s both; filter: drop-shadow(0 10px 30px rgba(0,0,0,.5)); }
+.intro-line { display: block; width: clamp(160px, 22vw, 300px); height: 2px; background: linear-gradient(90deg, transparent, #F3CF6A 30%, #FFF6D2 50%, #F3CF6A 70%, transparent); transform: scaleX(0); animation: intro-line .7s var(--ease-out) .6s both; box-shadow: 0 0 14px rgba(243,207,106,.7); }
+.intro-sub { margin: 0; font-size: clamp(13px, .8rem + .2vw, 15px); letter-spacing: .32em; color: rgba(243,207,106,.9); animation: hero-rise .6s var(--ease-out) .85s both; }
+@keyframes intro-logo { from { opacity: 0; transform: scale(1.5); filter: blur(6px); } to { opacity: 1; transform: none; filter: blur(0) drop-shadow(0 10px 30px rgba(0,0,0,.5)); } }
+@keyframes intro-line { to { transform: scaleX(1); } }
+@keyframes intro-out { to { clip-path: inset(0 0 100% 0); visibility: hidden; } }
+/* 인트로가 걷힌 뒤 배너 문구 등장 */
+.intro-on .hero-slide.is-active .hero-lockup { animation-delay: 1.7s; }
+.intro-on .hero-slide.is-active .hero-kw { animation-delay: 1.85s; }
+.intro-on .hero-slide.is-active .hero-title { animation-delay: 1.95s; }
+.intro-on .hero-slide.is-active .hero-lead { animation-delay: 2.15s; }
+.intro-on .hero-slide.is-active .hero-actions { animation-delay: 2.25s; }
+.intro-on .hero-slide.is-active .hero-facts { animation-delay: 2.35s; }
+.intro-on .hero-slide.is-active .em-ray { animation-delay: calc(2.5s + var(--i) * .07s), calc(3.3s + var(--i) * .15s); }
+
+/* 로고: 도장 찍듯 내려앉음 */
+@keyframes hero-stamp { 0% { opacity: 0; transform: scale(1.6) rotate(-6deg); } 60% { opacity: 1; transform: scale(.94) rotate(1deg); } 100% { opacity: 1; transform: none; } }
+.hero-slide.is-active .hero-lockup { animation-name: hero-stamp; animation-duration: .75s; }
+
+/* 배너 불티 */
+.hero-embers { position: absolute; inset: 0; z-index: 1; pointer-events: none; overflow: hidden; }
+.hero-embers i { position: absolute; left: var(--x); bottom: -10px; width: var(--s); height: var(--s); border-radius: 50%; background: radial-gradient(circle, #FFE7A0 0%, #FF8A1F 55%, rgba(255,80,0,0) 70%); box-shadow: 0 0 8px 2px rgba(255,140,40,.55); opacity: 0; animation: ember-rise var(--d) linear var(--dl) infinite; }
+@keyframes ember-rise { 0% { opacity: 0; transform: translate(0, 0); } 10% { opacity: .9; } 70% { opacity: .6; } 100% { opacity: 0; transform: translate(40px, -78vh); } }
+
+/* 0원 반짝이 */
+.em-spark { position: absolute; z-index: 2; width: .22em; height: .22em; background: #FFF6D2; clip-path: polygon(50% 0, 62% 38%, 100% 50%, 62% 62%, 50% 100%, 38% 62%, 0 50%, 38% 38%); filter: drop-shadow(0 0 4px #F3CF6A); opacity: 0; animation: em-twinkle 2.2s ease-in-out infinite; }
+.em-spark.s1 { right: -.12em; top: .02em; animation-delay: 1.2s; }
+.em-spark.s2 { left: -.16em; top: .38em; width: .15em; height: .15em; animation-delay: 1.9s; }
+.em-spark.s3 { right: .26em; bottom: -.02em; width: .13em; height: .13em; animation-delay: 2.6s; }
+@keyframes em-twinkle { 0%, 100% { opacity: 0; transform: scale(.3) rotate(0); } 45% { opacity: 1; transform: scale(1) rotate(45deg); } 70% { opacity: 0; transform: scale(.4) rotate(90deg); } }
+
+/* 숫자 띠: 금테 + 금속 숫자 + 0원 칸 붉은 빛 */
+.stats-card { position: relative; background: radial-gradient(130% 160% at 50% -30%, #11603a 0%, #003A1E 50%, #002515 100%); border: 1px solid rgba(243,207,106,.75); box-shadow: 0 26px 60px rgba(0,0,0,.32), inset 0 0 0 5px rgba(0,37,21,.9), inset 0 0 0 6px rgba(243,207,106,.32); }
+.stats-card::after { content: ''; position: absolute; top: 0; bottom: 0; left: -30%; width: 22%; background: linear-gradient(100deg, transparent, rgba(255,240,190,.13), transparent); transform: skewX(-18deg); animation: stats-sweep 6s ease-in-out 2s infinite; pointer-events: none; }
+@keyframes stats-sweep { 0% { left: -30%; } 40%, 100% { left: 130%; } }
+.stat { position: relative; border-color: rgba(243,207,106,.18) !important; }
+.stat-value .count { background: linear-gradient(180deg, #FFF3C4 0%, #F3CF6A 48%, #D9A93E 100%); -webkit-background-clip: text; background-clip: text; color: transparent; filter: drop-shadow(0 2px 0 rgba(0,0,0,.25)) drop-shadow(0 0 16px rgba(243,207,106,.25)); }
+.stat.stat-hq .stat-value .count { background: linear-gradient(180deg, #fff 0%, #f1ece0 100%); -webkit-background-clip: text; background-clip: text; }
+.stat-value small { color: #fff; }
+.stat-label { color: #fff; }
+.stat-zero { background: radial-gradient(ellipse 60% 55% at 50% 36%, rgba(235,28,36,.55) 0%, rgba(235,28,36,.2) 45%, transparent 75%); }
+.hero-slide .hero-in { z-index: 2; }
+.stat-zero .stat-value { font-size: calc(var(--fs-stat) * 1.12); }
+.stat-zero .stat-value .count { filter: drop-shadow(0 2px 0 rgba(0,0,0,.3)) drop-shadow(0 0 22px rgba(243,207,106,.45)); }
+@media (hover: hover) { .stat { transition: background-color .3s; } .stat:hover { background-color: rgba(243,207,106,.06); } }
+@media (prefers-reduced-motion: reduce) { .intro { display: none; } .hero-embers, .em-spark, .stats-card::after { display: none; } }
