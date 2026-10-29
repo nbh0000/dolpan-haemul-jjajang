@@ -353,23 +353,23 @@
   document.querySelectorAll('form.qb-form').forEach(setupForm);
 })();
 
-/* 실시간 상담 알림: 지점명을 하나씩 바꿔 가며 깜빡이듯 띄움 */
+/* 실시간 상담 현황 팝업: 왼쪽에 계속 떠 있고, 닫으면 작은 탭으로 다시 열 수 있음 */
 (function () {
-  var box = document.querySelector('.live-toast');
-  if (!box) return;
-  var items = [];
-  try { items = JSON.parse(box.getAttribute('data-items') || '[]'); } catch (e) {}
-  if (!items.length) return;
-  var place = box.querySelector('.lt-place');
-  var i = Math.floor(Math.random() * items.length);
-  function show() {
-    place.textContent = items[i % items.length];
-    i++;
-    box.classList.add('is-on');
-    setTimeout(function () {
-      box.classList.remove('is-on');
-      setTimeout(show, 1600);
-    }, 4200);
+  var pop = document.querySelector('.live-pop'), tab = document.querySelector('.live-pop-tab');
+  if (!pop || !tab) return;
+  var KEY = 'dj-livepop-hide', today = new Date().toISOString().slice(0, 10), hidden = false;
+  try { hidden = localStorage.getItem(KEY) === today || sessionStorage.getItem(KEY) === '1'; } catch (e) {}
+  function open() { pop.hidden = false; tab.hidden = true; requestAnimationFrame(function () { requestAnimationFrame(function () { pop.classList.add('is-on'); }); }); }
+  function close() {
+    pop.classList.remove('is-on'); tab.hidden = false;
+    try {
+      if (pop.querySelector('.lp-today').checked) localStorage.setItem(KEY, today);
+      sessionStorage.setItem(KEY, '1');
+    } catch (e) {}
+    setTimeout(function () { pop.hidden = true; }, 350);
   }
-  setTimeout(show, 2500);
+  pop.querySelector('.lp-x').addEventListener('click', close);
+  pop.querySelector('.lp-close').addEventListener('click', close);
+  tab.addEventListener('click', open);
+  if (hidden) tab.hidden = false; else setTimeout(open, 1200);
 })();
