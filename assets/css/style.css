@@ -1481,3 +1481,10 @@ main .sec.awards { background: radial-gradient(ellipse 60% 70% at 72% 50%, rgba(
 .stat-zero .stat-value .count { filter: drop-shadow(0 2px 0 rgba(0,0,0,.3)) drop-shadow(0 0 22px rgba(243,207,106,.45)); }
 @media (hover: hover) { .stat { transition: background-color .3s; } .stat:hover { background-color: rgba(243,207,106,.06); } }
 @media (prefers-reduced-motion: reduce) { .intro { display: none; } .hero-embers, .em-spark, .stats-card::after { display: none; } }
+
+/* 메뉴: 사진 없는 메뉴는 '그 외 메뉴' 꼬리표 한 줄 (가격 삭제 후, 2026-10-29) */
+.menu-more { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; margin-top: 14px; }
+.menu-more-label { margin: 0; font-size: 13px; font-weight: 700; color: var(--red); letter-spacing: .02em; }
+.menu-more-label::after { content: ''; display: inline-block; width: 18px; height: 1px; margin-left: 10px; vertical-align: middle; background: var(--gold-dark); }
+.menu-more ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.menu-more li { padding: 7px 14px; border: 1px solid var(--gold-line); border-radius: 6px; background: rgba(255,255,255,.7); font-size: 14px; font-weight: 600; color: var(--green-900); }
