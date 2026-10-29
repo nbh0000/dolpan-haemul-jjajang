@@ -1525,7 +1525,7 @@ main .sec.live-sec, .sec.live-sec { position: relative; overflow: hidden; color:
   background: radial-gradient(90% 55% at 50% 0%, rgba(255,214,120,.26), transparent 65%), repeating-linear-gradient(90deg, #1e120b 0 16px, #2c1b10 16px 26px, #170d08 26px 36px); }
 .notice-pop.is-on .np-card { transform: none; }
 .np-x { position: absolute; top: 8px; right: 10px; width: 34px; height: 34px; border: 0; background: none; color: rgba(255,255,255,.75); font-size: 26px; line-height: 1; cursor: pointer; }
-.np-body { flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 30px 22px 26px; }
+.np-body { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 30px 22px 26px; }
 .np-body .lp-laurel { width: 64px; height: 40px; margin-bottom: 8px; }
 .np-kicker { margin: 0 0 14px; font-size: 14px; font-weight: 600; color: rgba(255,255,255,.88); }
 .np-badge { display: inline-flex; align-items: center; gap: 7px; margin: 0 0 10px; padding: 5px 16px; border-radius: 999px; font-size: 15px; font-weight: 800; color: #fff; background: linear-gradient(180deg, #e8352b, #b3140e); box-shadow: 0 0 0 2px rgba(243,207,106,.6); }
@@ -1547,4 +1547,22 @@ main .sec.live-sec, .sec.live-sec { position: relative; overflow: hidden; color:
 .np-live .lp-badge i { width: 6px; height: 6px; }
 .np-live .lp-grid li > span { padding: 8px 2px 9px; font-size: 13px; border-radius: 0 0 8px 8px; }
 @media (max-width: 819px) { .notice-pop { align-content: flex-start; } }
+/* 공사중 매장 팝업: 사진 + 공사 테이프 + 진행 띠 + 요점 */
+.np-store-card .np-body { padding: 20px 22px 22px; }
+.np-photo { position: relative; aspect-ratio: 16 / 9; overflow: hidden; border-bottom: 2px solid #e9bf62; }
+.np-photo img { width: 100%; height: 100%; object-fit: cover; filter: saturate(.9) brightness(.85); }
+.np-photo::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 45%, rgba(20,12,7,.75)); }
+.np-tape { position: absolute; left: -10%; right: -10%; bottom: 18%; z-index: 1; display: flex; justify-content: center; gap: 28px; padding: 6px 0; rotate: -6deg; font: 800 13px/1 var(--font-num); letter-spacing: .12em; color: #111; white-space: nowrap; overflow: hidden;
+  background: repeating-linear-gradient(-45deg, #ffd23f 0 18px, #ffd23f 18px 18px, #111 18px 30px, #ffd23f 30px 48px); box-shadow: 0 4px 12px rgba(0,0,0,.45); }
+.np-tape b { padding: 3px 10px; background: #ffd23f; }
+.np-store-card .np-kicker { margin-bottom: 10px; }
+.np-store-card .np-store { font-size: 27px; }
+.np-progress { width: 100%; height: 10px; margin: 16px 0 4px; border-radius: 999px; overflow: hidden; background: rgba(255,255,255,.12); border: 1px solid rgba(243,207,106,.4); }
+.np-progress span { display: block; width: 62%; height: 100%; border-radius: inherit; background: repeating-linear-gradient(-45deg, #f3b84a 0 8px, #d38e26 8px 16px); background-size: 22.6px 22.6px; animation: np-stripe 1s linear infinite; }
+@keyframes np-stripe { to { background-position: 22.6px 0; } }
+.np-points { list-style: none; width: 100%; margin: 14px 0 0; padding: 12px 14px; display: grid; gap: 7px; text-align: left; border-radius: 10px; background: rgba(0,0,0,.28); border: 1px solid rgba(243,207,106,.25); }
+.np-points li { position: relative; padding-left: 22px; font-size: 14px; font-weight: 600; color: #fff; }
+.np-points li::before { content: ""; position: absolute; left: 2px; top: .42em; width: 11px; height: 6px; border-left: 2.5px solid #f3cf6a; border-bottom: 2.5px solid #f3cf6a; rotate: -45deg; }
+.np-store-card .np-cta { margin-top: 16px; }
+@media (prefers-reduced-motion: reduce) { .np-progress span { animation: none; } }
 
