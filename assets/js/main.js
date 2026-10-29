@@ -352,3 +352,24 @@
   if (mainForm) setupForm(mainForm);
   document.querySelectorAll('form.qb-form').forEach(setupForm);
 })();
+
+/* 실시간 상담 알림: 지점명을 하나씩 바꿔 가며 깜빡이듯 띄움 */
+(function () {
+  var box = document.querySelector('.live-toast');
+  if (!box) return;
+  var items = [];
+  try { items = JSON.parse(box.getAttribute('data-items') || '[]'); } catch (e) {}
+  if (!items.length) return;
+  var place = box.querySelector('.lt-place');
+  var i = Math.floor(Math.random() * items.length);
+  function show() {
+    place.textContent = items[i % items.length];
+    i++;
+    box.classList.add('is-on');
+    setTimeout(function () {
+      box.classList.remove('is-on');
+      setTimeout(show, 1600);
+    }, 4200);
+  }
+  setTimeout(show, 2500);
+})();
